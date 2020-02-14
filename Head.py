@@ -4,7 +4,7 @@ import datetime
 import os
 
 
-def format_date():  # Функция для полученгия времени в формате ДД.ММ.ГГГГ ЧЧ:ММ
+def format_date():  # Функция для полученгия времени в формате ДД.ММ.ГГГГ ЧЧ:ММ:CC
     set_time = datetime.datetime.now()
     m = str(set_time.month)
     d = str(set_time.day)
