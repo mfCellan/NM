@@ -46,19 +46,19 @@ for user in users:
                 if len(task['title']) > 50:  # Если кол-во символов в названии > 50 то обрезать  до 50ти символов
                     unfinished_list += task['title'][0:50] + '...\n'
                 else:
-                    unfinished_list += task['title'] + '\n'  # Добавить задачу в список решённых задач
+                    unfinished_list += task['title'] + '\n'  # Добавить задачу в список не решённых задач
     file_address = path + '/' + user['username'] + '.txt'  # Имя файла для пользователя
     if os.path.exists(file_address):  # Проверка на существование файла с таким именем
         file = open(file_address, 'r')
-        date = file.readline()  # Считываем первую строку фала чтобы получить время создания отчета
+        date = file.readline()  # Считываем первую строку файла чтобы получить время создания отчёта
         file.close()
-        t = date[len(date) - 9:len(date) - 1]  # получение времени создание файла
-        t = t.replace(':', '-')  # замена : на - , т.к. в название файла нельзя использовать :
-        y = date[len(date) - 14:len(date) - 10]  # получение года создание файла
-        m = date[len(date) - 17:len(date) - 15]  # получение месяца создание файла
-        d = date[len(date) - 20:len(date) - 18]  # получение дня создание файла
+        t = date[len(date) - 9:len(date) - 1]  # получение времени создания файла
+        t = t.replace(':', '-')  # замена ":" на "-" , т.к. в название файла нельзя использовать ":"
+        y = date[len(date) - 14:len(date) - 10]  # Получение года создание файла
+        m = date[len(date) - 17:len(date) - 15]  # Получение месяца создание файла
+        d = date[len(date) - 20:len(date) - 18]  # Получение дня создание файла
         new_file_address = path + '/' + user['username'] + '_' + y + '-' + m + '-' + d + 'T' + t + '.txt'
-        os.renames(file_address, new_file_address)  # Переименование старого отчета
+        os.renames(file_address, new_file_address)  # Переименование старого отчёта
     file = open(file_address, 'w')  # Открытие файла для записи
     file.write(user['name'] + ' <' + user['email'] + '> ' + format_date() + '\n')  # Записываем имя, email, дату и время
     file.write(user['company']['name'] + '\n\n')  # Записываем название компании в которой работает пользователь
