@@ -4,29 +4,24 @@ import datetime
 import os
 
 
-def dataformat():  # Функция для полученгия времени в формате ДД.ММ.ГГГГ ЧЧ:ММ
+def format_date():  # Функция для полученгия времени в формате ДД.ММ.ГГГГ ЧЧ:ММ
     set_time = datetime.datetime.now()
-    month = str(set_time.month)
-    day = str(set_time.day)
-    hour = str(set_time.hour)
-    minute = str(set_time.minute)
-    second = str(set_time.second)
+    m = str(set_time.month)
+    d = str(set_time.day)
+    h = str(set_time.hour)
+    min = str(set_time.minute)
+    sec = str(set_time.second)
     if set_time.second < 10:
-        second = '0' + second
-
+        sec = '0' + sec
     if set_time.month < 10:
-        month = '0' + month
-
+        m = '0' + m
     if set_time.day < 10:
-        day = '0' + day
-
+        d = '0' + d
     if set_time.hour < 10:
-        hour = '0' + hour
-
+        h = '0' + h
     if set_time.minute < 10:
-        minute = '0' + minute
-
-    return day + '.' + month + '.' + str(set_time.year) + ' ' + hour + ':' + minute + ':' + second
+        min = '0' + min
+    return d + '.' + m + '.' + str(set_time.year) + ' ' + h + ':' + min + ':' + sec
 
 
 path = os.getcwd()  # получаем директорию в которой хранится скрипт
@@ -41,7 +36,6 @@ for user in users:
     finished_list = ''  # Строка для хранения выполненных заданий
     unfinished_list = ''  # Строка для хранения не выполненных заданий
     for task in tasks:  # Поиск для каждого пользователя выполненных и не выполненных заданий
-
         if task['userId'] == user['id']:  # Проверка на принадлежность задачи конкретному пользователю
             if task['completed']:  # Проверка статуса готовности задани (выполнена, не выполнена)
                 if len(task['title']) > 50:  # Если кол-во символов в названии > 50 то обрезать  до 50ти символов
@@ -58,17 +52,15 @@ for user in users:
         file = open(file_address, 'r')
         date = file.readline()  # Считываем первую строку фала чтобы получить время создания отчета
         file.close()
-        # Получение времени создания отчета
-        seconds = date[len(date) - 3:len(date) - 1]
-        time = date[len(date) - 9:len(date) - 4]
-        time = time.replace(':', '-')
-        year = date[len(date) - 14:len(date) - 10]
-        month = date[len(date) - 17:len(date) - 15]
-        day = date[len(date) - 20:len(date) - 18]
-        new_file_address = path + '/' + user['username'] + '_' + year + '-' + month + '-' + day + 'T' + time + '-' + seconds + '.txt'
-        os.renames(file_address, new_file_address)  # Переименовывание старого отчета
+        t = date[len(date) - 9:len(date) - 1]  # получение времени создание файла
+        t = t.replace(':', '-')  # замена : на - , т.к. в название файла нельзя использовать :
+        y = date[len(date) - 14:len(date) - 10]  # получение года создание файла
+        m = date[len(date) - 17:len(date) - 15]  # получение месяца создание файла
+        d = date[len(date) - 20:len(date) - 18]  # получение дня создание файла
+        new_file_address = path + '/' + user['username'] + '_' + y + '-' + m + '-' + d + 'T' + t + '.txt'
+        os.renames(file_address, new_file_address)  # Переименование старого отчета
     file = open(file_address, 'w')  # Открытие файла для записи
-    file.write(user['name'] + ' <' + user['email'] + '> ' + dataformat() + '\n')  # Записываем имя, email, дату и время
+    file.write(user['name'] + ' <' + user['email'] + '> ' + format_date() + '\n')  # Записываем имя, email, дату и время
     file.write(user['company']['name'] + '\n\n')  # Записываем название компании в которой работает пользователь
     if not(len(finished_list) == 0):
         file.write('Завершенные задачи: \n')
